@@ -112,29 +112,33 @@
             <div class="col-md-12">
               <div class="col-md-6 animate-box">
                 <h3>Get In Touch</h3>
-                <form action="#">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong>Thank You!</strong> We have received your message.
+                </div>
+                <form name="contact-form" id="contact-form">
                   <div class="row form-group">
                     <div class="col-md-12">
                       <label class="sr-only" for="name">Name</label>
-                      <input type="text" id="name" class="form-control" placeholder="Your name" />
+                      <input type="text" id="name" class="form-control" placeholder="Your name" name="nama" />
                     </div>
                   </div>
                   <div class="row form-group">
                     <div class="col-md-12">
                       <label class="sr-only" for="phone">Phone</label>
-                      <input type="number" id="phone" class="form-control" placeholder="Your phone" />
+                      <input type="text" id="phone" class="form-control" placeholder="Your phone" name="telepon" />
                     </div>
                   </div>
                   <div class="row form-group">
                     <div class="col-md-12">
                       <label class="sr-only" for="email">Email</label>
-                      <input type="text" id="email" class="form-control" placeholder="Your email" />
+                      <input type="text" id="email" class="form-control" placeholder="Your email" name="email" />
                     </div>
                   </div>
                   <div class="row form-group">
                     <div class="col-md-12">
                       <label class="sr-only" for="message">Message</label>
-                      <textarea name="message" id="message" cols="30" rows="10" class="form-control" placeholder="Write us something.."></textarea>
+                      <textarea id="message" cols="30" rows="10" class="form-control" placeholder="Write us something.." name="pesan"></textarea>
                     </div>
                   </div>
                   <div class="form-group">
@@ -219,5 +223,27 @@
 
     <!-- Main -->
     <script src="js/main.js"></script>
+
+    <!-- Script contact form -->
+    <script>
+      $(function () {
+        $(".alert").hide();
+      });
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbyeOnMNCScwDXMdVLqg9a11ZGopH3NmemaY6TOOm-g96z4HvW1v9dRaIhkEC-xauz4c/exec";
+      const form = document.forms["contact-form"];
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+          .then((response) => {
+            if (response.status == 200) {
+              $(".alert").show();
+              $("#contact-form").trigger("reset");
+            }
+          })
+          .catch((error) => console.error("Error!", error.message));
+      });
+    </script>
   </body>
 </html>
